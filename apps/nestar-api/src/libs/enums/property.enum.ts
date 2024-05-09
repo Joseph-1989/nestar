@@ -5,6 +5,7 @@ export enum PropertyType {
 	VILLA = 'VILLA',
 	HOUSE = 'HOUSE',
 }
+
 registerEnumType(PropertyType, {
 	name: 'PropertyType',
 });
@@ -15,6 +16,7 @@ export enum PropertyStatus {
 	SOLD = 'SOLD',
 	DELETE = 'DELETE',
 }
+
 registerEnumType(PropertyStatus, {
 	name: 'PropertyStatus',
 });
@@ -30,6 +32,7 @@ export enum PropertyLocation {
 	DAEJON = 'DAEJON',
 	JEJU = 'JEJU',
 }
+
 registerEnumType(PropertyLocation, {
 	name: 'PropertyLocation',
 });
