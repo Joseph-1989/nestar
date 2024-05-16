@@ -45,7 +45,7 @@ export class MemberService {
 	}
 
 	public async updateMember(): Promise<string> {
-		console.log('updateMember');
+		console.log('MemberService: updateMember');
 		return 'updateMember executed successfully';
 	}
 
