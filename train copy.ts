@@ -51,3 +51,16 @@ console.log(stringToKebab('I love Kebab')); // "i-love-kebab"
 console.log(stringToKebab('Hello World!')); // "hello-world"
 console.log(stringToKebab('ThisIsATest')); // "this-is-a-test"
 console.log(stringToKebab('123-abc-456')); // "123-abc-456"
+
+// ZM-TASK:
+
+// Shunday function yozing, u function parametrga berilgan
+// raqamlarni orqasiga ogirib qaytarsin.
+// MASALAN: reverseInteger(123456789) return 987654321
+
+function reverseInteger(n: number): number {
+	const reversedStr = n.toString().split('').reverse().join('');
+	return parseInt(reversedStr, 10);
+}
+
+console.log(reverseInteger(123456789)); // Output: 987654321
