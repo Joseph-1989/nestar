@@ -43,24 +43,23 @@ export class MemberService {
 		response.accessToken = await this.authService.createToken(response);
 		return response;
 	}
+
+	public async updateMember(): Promise<string> {
+		console.log('updateMember');
+		return 'updateMember executed successfully';
+	}
+
+	public async getAllMembersByAdmin(): Promise<string> {
+		console.log('getAllMembersByAdmin');
+		return 'getAllMembersByAdmin executed successfully';
+	}
+
+	public async updateMemberByAdmin(): Promise<string> {
+		console.log('getAllMembersByAdmin');
+		return 'updateMemberByAdmin executed successfully';
+	}
+
+	public async getMember(): Promise<string> {
+		return 'getMember executed successfully';
+	}
 }
-
-// public async updateMember(input: MemberInput): Promise<Member> {
-// 	try {
-// 		const result = await this.memberModel.create(input);
-// 		return result;
-// 	} catch (err) {
-// 		console.log('Error: Model.service:', err);
-// 		throw new InternalServerErrorException(err);
-// 	}
-// }
-
-// public async getMember(input: MemberInput): Promise<Member> {
-// 	try {
-// 		const result = await this.memberModel.create(input);
-// 		return result;
-// 	} catch (err) {
-// 		console.log('Error: Model.service:', err);
-// 		throw new InternalServerErrorException(err);
-// 	}
-// }
