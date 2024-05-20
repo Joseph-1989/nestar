@@ -59,6 +59,16 @@ export class MemberService {
 		return result;
 	}
 
+	public async getMember(targetId: ObjectId): Promise<Member> {
+		const search: T = {
+			_id: targetId,
+			memberStatus: { $in: [MemberStatus.ACTIVE, MemberStatus.BLOCK] },
+		};
+		const targetMember = await this.memberModel.findOne(search).exec();
+		if (!targetMember) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		return targetMember;
+	}
+
 	public async getAllMembersByAdmin(): Promise<string> {
 		console.log('getAllMembersByAdmin');
 		return 'getAllMembersByAdmin executed successfully';
@@ -67,9 +77,5 @@ export class MemberService {
 	public async updateMemberByAdmin(): Promise<string> {
 		console.log('getAllMembersByAdmin');
 		return 'updateMemberByAdmin executed successfully';
-	}
-
-	public async getMember(): Promise<string> {
-		return 'getMember executed successfully';
 	}
 }
