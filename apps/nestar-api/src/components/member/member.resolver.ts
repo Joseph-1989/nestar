@@ -9,17 +9,21 @@ import { ObjectId } from 'mongoose';
 import { MemberType } from '../../libs/enums/member.enum';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Resolver()
 export class MemberResolver {
 	constructor(private readonly memberService: MemberService) {}
 
+	// MUTATION => SIGNUP
 	@Mutation(() => Member)
 	public async signup(@Args('input') input: MemberInput): Promise<Member> {
 		console.log('Mutation: signup');
 		console.log('input:', input);
 		return await this.memberService.signup(input);
 	}
+
+	// MUTATION => LOGIN
 	@Mutation(() => Member)
 	public async login(@Args('input') input: LoginInput): Promise<Member> {
 		console.log('Mutation: login');
@@ -29,15 +33,7 @@ export class MemberResolver {
 
 	// AUTHENTICATED
 
-	@UseGuards(AuthGuard)
-	@Mutation(() => String)
-	public async updateMember(@AuthMember('_id') memberId: ObjectId): Promise<string> {
-		console.log('Mutation: updateMember');
-		console.log('typeof memberId: ', typeof memberId);
-		console.log('memberId:', memberId);
-		return await this.memberService.updateMember();
-	}
-
+	// QUERY => CHECK_AUTH
 	@UseGuards(AuthGuard)
 	@Query(() => String)
 	public async checkAuth(@AuthMember('memberNick') memberNick: ObjectId): Promise<string> {
@@ -46,6 +42,8 @@ export class MemberResolver {
 		console.log('memberNick:', memberNick);
 		return await `Hi ${memberNick}`;
 	}
+
+	// QUERY => CHECK_AUTH_ROLES
 
 	@Roles(MemberType.USER, MemberType.AGENT)
 	@UseGuards(RolesGuard)
@@ -58,6 +56,21 @@ export class MemberResolver {
 		return await `Hi, your memberType is ${authMember.memberType} and your memberNick is ${authMember.memberNick}, your memberId is ${authMember._id}`;
 	}
 
+	// MUTATION => UPDATE_MEMBER
+	@UseGuards(AuthGuard)
+	@Mutation(() => Member)
+	public async updateMember(
+		@Args('input') input: MemberUpdate,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Member> {
+		console.log('Mutation: updateMember');
+		console.log('typeof memberId: ', typeof memberId);
+		console.log('memberId:', memberId);
+		delete input._id;
+		return await this.memberService.updateMember(memberId, input);
+	}
+
+	// QUERY => GET_MEMBER
 	@Query(() => Member)
 	public async getMember(): Promise<string> {
 		console.log('Query: getMember');
@@ -67,6 +80,8 @@ export class MemberResolver {
 	// ADMIN
 
 	// AUTHORIZATION: ADMIN
+
+	//MUTATION => GET_ALL_MEMBER_BY_ADMIN
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
 	@Mutation(() => String)
@@ -80,6 +95,7 @@ export class MemberResolver {
 
 	// AUTHORIZATION: ADMIN
 
+	//MUTATION => UPDATE_MEMBER_BY_ADMIN
 	@Mutation(() => String)
 	public async updateMemberByAdmin(): Promise<string> {
 		console.log('Updating member by admin');

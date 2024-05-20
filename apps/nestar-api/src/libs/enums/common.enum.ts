@@ -3,6 +3,7 @@ export enum Message {
 	NO_DATA_FOUND = 'No data found!',
 	CREATE_FAILED = 'Create failed!',
 	UPDATE_FAILED = 'Update failed!',
+	UPLOAD_FAILED = 'Update failed!',
 	REMOVE_FAILED = 'Remove failed!',
 	BAD_REQUEST = 'Bad Request',
 	USED_MEMBERS_NICK_OR_PHONE = 'ALREADY USED MEMBERNICK OR PHONE ',
