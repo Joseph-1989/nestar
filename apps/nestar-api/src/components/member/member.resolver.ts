@@ -11,7 +11,7 @@ import { MemberUpdate } from '../../libs/dto/member/member.update';
 import { shapeIntoMongoObjectId } from '../../libs/config';
 import { WithoutGuard } from '../auth/guards/without.guard';
 import { Member, Members } from '../../libs/dto/member/member';
-import { LoginInput, MemberInput, AgentsInquiry } from '../../libs/dto/member/member.input';
+import { LoginInput, MemberInput, AgentsInquiry, MembersInquiry } from '../../libs/dto/member/member.input';
 
 @Resolver()
 export class MemberResolver {
@@ -99,21 +99,19 @@ export class MemberResolver {
 	//MUTATION => GET_ALL_MEMBER_BY_ADMIN
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
-	@Mutation(() => String)
-	public async getAllMembersByAdmin(@AuthMember() authMember: Member): Promise<string> {
-		console.log('getAllMembersByAdmin');
-		console.log('typeof authMember: ', typeof authMember);
-		console.log('authMember.memberType:', authMember.memberType);
-		console.log('authMember:', authMember);
-		return await this.memberService.getAllMembersByAdmin();
+	@Mutation(() => Members)
+	public async getAllMembersByAdmin(@Args('input') input: MembersInquiry): Promise<Members> {
+		console.log('Query: getAllMembersByAdmin');
+
+		return await this.memberService.getAllMembersByAdmin(input);
 	}
 
 	// AUTHORIZATION: ADMIN
 
 	//MUTATION => UPDATE_MEMBER_BY_ADMIN
-	@Mutation(() => String)
-	public async updateMemberByAdmin(): Promise<string> {
-		console.log('Updating member by admin');
-		return await this.memberService.updateMemberByAdmin();
+	@Mutation(() => Member)
+	public async updateMemberByAdmin(@Args('input') input: MemberUpdate): Promise<Member> {
+		console.log('Mutation: updateMemberByAdmin');
+		return await this.memberService.updateMemberByAdmin(input);
 	}
 }
