@@ -1,19 +1,36 @@
-// ZN-TASK:
+// ZO-TASK:
 
-// Shunday function yozing, uni array va number parametri bolsin.
-// Ikkinchi parametrda berilgan raqamli indexgacha arrayni orqasiga ogirib qaytarsin.
-// MASALAN: rotateArray([1, 2, 3, 4, 5, 6], 3) return [5, 6, 1, 2, 3, 4]
+// Shunday function yozing, u parametrdagi string ichidagi qavslar miqdori balansda
+// ekanligini aniqlasin. Ya'ni ochish("(") va yopish(")") qavslar soni bir xil bolishi kerak.
+// MASALAN: areParenthesesBalanced("string()ichida(qavslar)soni()balansda") return true
 
-function rotateArray(arr: any[], index: number): any[] {
-	if (!Array.isArray(arr) || typeof index !== 'number') {
-		throw new Error('Invalid arguments: array and number expected');
+function areParenthesesBalanced(inputString: string): boolean {
+	let openingParenthesesCount = 0;
+
+	for (const char of inputString) {
+		// If the character is an opening parenthesis, increment the counter
+		if (char === '(') {
+			openingParenthesesCount++;
+		}
+		// If the character is a closing parenthesis, decrement the counter
+		else if (char === ')') {
+			openingParenthesesCount--;
+
+			// If the counter goes below zero, return false, as this indicates an unmatched closing parenthesis
+			if (openingParenthesesCount < 0) {
+				return false;
+			}
+		}
 	}
-	const length = arr.length;
-	const newIndex = ((index % length) + length) % length;
-	return arr.slice(newIndex).concat(arr.slice(0, newIndex));
+
+	// After iterating through the entire string, if the counter is zero, then the parentheses are balanced
+	if (openingParenthesesCount === 0) {
+		return true;
+	}
+	// Otherwise, they are not balanced
+	else {
+		return false;
+	}
 }
 
-const arr = [1, 2, 3, 4, 5, 6];
-const index = 3;
-const rotatedArr = rotateArray(arr, index);
-console.log(rotatedArr); // [5, 6, 1, 2, 3, 4]
+console.log(areParenthesesBalanced('string()ichida(qavslar)soni()balansda (())'));
