@@ -20,7 +20,7 @@ import { Message } from '../../libs/enums/common.enum';
 export class MemberResolver {
 	constructor(private readonly memberService: MemberService) {}
 
-	// MUTATION => SIGNUP================================================================
+	// MUTATION => SIGNUP ================================================================
 	@Mutation(() => Member)
 	public async signup(@Args('input') input: MemberInput): Promise<Member> {
 		console.log('Mutation: signup');
@@ -28,7 +28,7 @@ export class MemberResolver {
 		return await this.memberService.signup(input);
 	}
 
-	// MUTATION => LOGIN================================================================
+	// MUTATION => LOGIN ================================================================
 	@Mutation(() => Member)
 	public async login(@Args('input') input: LoginInput): Promise<Member> {
 		console.log('Mutation: login');
@@ -36,9 +36,9 @@ export class MemberResolver {
 		return await this.memberService.login(input);
 	}
 
-	// AUTHENTICATED
+	// AUTHENTICATED ====================================================================
 
-	// QUERY => CHECK_AUTH================================================================
+	// QUERY => CHECK_AUTH ================================================================
 	@UseGuards(AuthGuard)
 	@Query(() => String)
 	public async checkAuth(@AuthMember('memberNick') memberNick: ObjectId): Promise<string> {
@@ -48,7 +48,7 @@ export class MemberResolver {
 		return await `Hi ${memberNick}`;
 	}
 
-	// QUERY => CHECK_AUTH_ROLES================================================================
+	// QUERY => CHECK_AUTH_ROLES ================================================================
 
 	@Roles(MemberType.USER, MemberType.AGENT)
 	@UseGuards(RolesGuard)
@@ -61,7 +61,7 @@ export class MemberResolver {
 		return await `Hi, your memberType is ${authMember.memberType} and your memberNick is ${authMember.memberNick}, your memberId is ${authMember._id}`;
 	}
 
-	// MUTATION => UPDATE_MEMBER================================================================
+	// MUTATION => UPDATE_MEMBER ================================================================
 	@UseGuards(AuthGuard)
 	@Mutation(() => Member)
 	public async updateMember(
@@ -95,11 +95,11 @@ export class MemberResolver {
 		return await this.memberService.getAgents(memberId, input);
 	}
 
-	// ADMIN
+	// ADMIN =======================================================================
 
-	// AUTHORIZATION: ADMIN
+	// AUTHORIZATION: ADMIN ========================================================================
 
-	//MUTATION => GET_ALL_MEMBER_BY_ADMIN================================================================
+	//MUTATION => GET_ALL_MEMBER_BY_ADMIN ================================================================
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
 	@Query(() => Members)
@@ -111,16 +111,16 @@ export class MemberResolver {
 
 	// AUTHORIZATION: ADMIN
 
-	//MUTATION => UPDATE_MEMBER_BY_ADMIN===================================================================
+	//MUTATION => UPDATE_MEMBER_BY_ADMIN ===================================================================
 	@Mutation(() => Member)
 	public async updateMemberByAdmin(@Args('input') input: MemberUpdate): Promise<Member> {
 		console.log('Mutation: updateMemberByAdmin');
 		return await this.memberService.updateMemberByAdmin(input);
 	}
 
-	// IMAGE UPLOADER=======================================================================================
+	// IMAGE UPLOADER =======================================================================================
 
-	//MUTATION => IMAGE_UPLOADER===================================================================
+	//MUTATION => IMAGE_UPLOADER ===================================================================
 	@UseGuards(AuthGuard)
 	@Mutation((returns) => String)
 	public async imageUploader(
@@ -149,7 +149,7 @@ export class MemberResolver {
 		return url;
 	}
 
-	//MUTATION => IMAGE_S_UPLOADER===================================================================
+	//MUTATION => IMAGE_S_UPLOADER ===================================================================
 	@UseGuards(AuthGuard)
 	@Mutation((returns) => [String])
 	public async imagesUploader(
