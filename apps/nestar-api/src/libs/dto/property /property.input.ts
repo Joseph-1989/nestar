@@ -1,10 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsIn, IsInt, isNotEmpty, IsNotEmpty, IsOptional, Length, min, Min } from 'class-validator';
-import { MemberAuthType, MemberStatus, MemberType } from '../../enums/member.enum';
-import { availableAgentsSorts, availableMembersSorts } from '../../config';
-import { Direction } from '../../enums/common.enum';
-import { Property } from './property';
-import { PropertyLocation, PropertyStatus, PropertyType } from '../../enums/property.enum';
+import { IsInt, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
+import { PropertyLocation, PropertyType } from '../../enums/property.enum';
 import { ObjectId } from 'mongoose';
 
 @InputType()
