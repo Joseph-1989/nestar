@@ -1,36 +1,26 @@
-// ZO-TASK:
+// ZP-TASK:
 
-// Shunday function yozing, u parametrdagi string ichidagi qavslar miqdori balansda
-// ekanligini aniqlasin. Ya'ni ochish("(") va yopish(")") qavslar soni bir xil bolishi kerak.
-// MASALAN: areParenthesesBalanced("string()ichida(qavslar)soni()balansda") return true
+// Shunday function yozing, u parametridagi array ichida
+// eng kop takrorlangan raqamni topib qaytarsin.
+// MASALAN: majorityElement([1,2,3,4,5,4,3,4]) return 4
 
-function areParenthesesBalanced(inputString: string): boolean {
-	let openingParenthesesCount = 0;
+function majorityElement(arr: number[]): number | undefined {
+	if (arr.length === 0) return undefined;
 
-	for (const char of inputString) {
-		// If the character is an opening parenthesis, increment the counter
-		if (char === '(') {
-			openingParenthesesCount++;
-		}
-		// If the character is a closing parenthesis, decrement the counter
-		else if (char === ')') {
-			openingParenthesesCount--;
+	const elementCounts = new Map<number, number>();
 
-			// If the counter goes below zero, return false, as this indicates an unmatched closing parenthesis
-			if (openingParenthesesCount < 0) {
-				return false;
-			}
-		}
+	for (const num of arr) {
+		const currentCount = elementCounts.get(num) || 0;
+		elementCounts.set(num, currentCount + 1);
 	}
 
-	// After iterating through the entire string, if the counter is zero, then the parentheses are balanced
-	if (openingParenthesesCount === 0) {
-		return true;
+	const maxCount = Math.max(...elementCounts.values());
+
+	for (const [num, count] of elementCounts.entries()) {
+		if (count === maxCount) return num;
 	}
-	// Otherwise, they are not balanced
-	else {
-		return false;
-	}
+
+	return undefined;
 }
 
-console.log(areParenthesesBalanced('string()ichida(qavslar)soni()balansda (())'));
+console.log(majorityElement([1, 2, 3, 4, 5, 4, 3, 4, 8, 8, 8, 8, 999999])); // Output: 4
