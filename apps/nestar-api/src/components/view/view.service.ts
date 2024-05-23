@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { View } from '../../libs/dto/view/view';
 import { Model } from 'mongoose';
 import { ViewInput } from '../../libs/dto/view/view.input';
+import { T } from '../../libs/types/common';
 
 @Injectable()
 export class ViewService {
