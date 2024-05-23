@@ -9,6 +9,7 @@ import { Member, Members } from '../../libs/dto/member/member';
 import { ViewService } from '../view/view.service';
 import { ViewGroup } from '../../libs/enums/view.enum';
 import { AgentsInquiry, LoginInput, MemberInput, MembersInquiry } from '../../libs/dto/member/member.input';
+import { StatisticModifier } from '../../libs/types/common';
 
 @Injectable()
 export class MemberService {
@@ -143,5 +144,18 @@ export class MemberService {
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
 		console.log('Member.service: getAllMembersByAdmin');
 		return result;
+	}
+	public async memberStatsEditor(input: StatisticModifier): Promise<Member> {
+		console.log('memberStatsEditor:', input);
+		const { _id, targetKey, modifier } = input;
+		return await this.memberModel
+			.findByIdAndUpdate(
+				_id,
+				{
+					$inc: { [targetKey]: modifier },
+				},
+				{ new: true },
+			)
+			.exec();
 	}
 }

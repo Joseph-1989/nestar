@@ -68,8 +68,6 @@ export class Member {
 
 	@Field(() => Int)
 	memberBlocks: number;
-	@Field(() => Date, { nullable: true })
-	deletedAt?: Date;
 
 	@Field(() => Date)
 	createdAt: Date;
