@@ -87,6 +87,7 @@ export class Property {
 export class Properties {
 	@Field(() => [Property])
 	list: Property[];
+
 	@Field(() => [TotalCounter], { nullable: true })
 	metaCounter: TotalCounter[];
 }
