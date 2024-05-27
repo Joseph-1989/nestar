@@ -10,6 +10,9 @@ import { ViewService } from '../view/view.service';
 import { ViewGroup } from '../../libs/enums/view.enum';
 import { AgentsInquiry, LoginInput, MemberInput, MembersInquiry } from '../../libs/dto/member/member.input';
 import { StatisticModifier, T } from '../../libs/types/common';
+import { LikeInput } from '../../libs/dto/like/like.input';
+import { LikeGroup } from '../../libs/enums/like.enum';
+import { LikeService } from '../like/like.service';
 
 @Injectable()
 export class MemberService {
@@ -17,7 +20,10 @@ export class MemberService {
 		@InjectModel('Member') private readonly memberModel: Model<Member>,
 		private authService: AuthService,
 		private viewService: ViewService,
+		private likeService: LikeService,
 	) {}
+
+	// MUTATION => SIGNUP ================================================================
 
 	public async signup(input: MemberInput): Promise<Member> {
 		input.memberPassword = await this.authService.hashPassword(input.memberPassword);
@@ -33,6 +39,7 @@ export class MemberService {
 		}
 	}
 
+	// MUTATION => LOGIN ================================================================
 	public async login(input: LoginInput): Promise<Member> {
 		const { memberNick, memberPassword } = input;
 		const response: Member = await this.memberModel.findOne({ memberNick: memberNick }).select('+memberPassword');
@@ -49,6 +56,8 @@ export class MemberService {
 		return response;
 	}
 
+	// MUTATION => UPDATE_MEMBER ================================================================
+
 	public async updateMember(memberId: ObjectId, input: MemberUpdate): Promise<Member> {
 		const result: Member = await this.memberModel
 			.findOneAndUpdate({ _id: memberId, memberStatus: MemberStatus.ACTIVE }, input, {
@@ -62,6 +71,8 @@ export class MemberService {
 		console.log('MemberService: updateMember');
 		return result;
 	}
+
+	// QUERY => GET_MEMBER =================================================================
 
 	public async getMember(memberId: ObjectId, targetId: ObjectId): Promise<Member> {
 		const search: T = {
@@ -82,6 +93,7 @@ export class MemberService {
 
 		return targetMember;
 	}
+	// QUERY => get_Agents =================================================================
 
 	public async getAgents(memberId: ObjectId, input: AgentsInquiry): Promise<Members> {
 		const { text } = input.search;
@@ -106,6 +118,31 @@ export class MemberService {
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 		return result[0];
 	}
+
+	//MUTATION => LIKE_TARGET_MEMBER ================================================================
+	public async likeTargetMember(memberId: ObjectId, likeRefId: ObjectId): Promise<Member> {
+		const target: Member = await this.memberModel.findOne({ _id: likeRefId, memberStatus: MemberStatus.ACTIVE }).exec();
+		if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+		const input: LikeInput = {
+			memberId: memberId,
+			likeRefId: likeRefId,
+			likeGroup: LikeGroup.MEMBER,
+		};
+
+		// LIKE TOGGLE via Like modules
+		const modifier: number = await this.likeService.toggleLike(input);
+		const result = await this.memberStatsEditor({ _id: likeRefId, targetKey: 'memberLikes', modifier: modifier });
+		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
+
+		return result;
+	}
+
+	// ADMIN =======================================================================
+
+	// AUTHORIZATION: ADMIN ========================================================================
+
+	//MUTATION => GET_ALL_MEMBER_BY_ADMIN ================================================================
 
 	public async getAllMembersByAdmin(input: MembersInquiry): Promise<Members> {
 		const { memberStatus, memberType, text } = input.search;
@@ -133,6 +170,9 @@ export class MemberService {
 		return result[0];
 	}
 
+	// AUTHORIZATION: ADMIN
+
+	//MUTATION => UPDATE_MEMBER_BY_ADMIN ===================================================================
 	public async updateMemberByAdmin(input: MemberUpdate): Promise<Member> {
 		const result: Member = await this.memberModel
 			.findOneAndUpdate({ _id: input._id }, input, {
@@ -145,6 +185,10 @@ export class MemberService {
 		console.log('Member.service: getAllMembersByAdmin');
 		return result;
 	}
+
+	// memberStatsEditor =======================================================================================
+
+	//memberStatsEditor ===================================================================
 	public async memberStatsEditor(input: StatisticModifier): Promise<Member> {
 		console.log('memberStatsEditor:', input);
 		const { _id, targetKey, modifier } = input;

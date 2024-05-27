@@ -87,12 +87,26 @@ export class MemberResolver {
 		return await this.memberService.getMember(memberId, targetId);
 	}
 
+	// QUERY => get_Agents =================================================================
+
 	@UseGuards(WithoutGuard)
 	@Query(() => Members)
 	public async getAgents(@Args('input') input: AgentsInquiry, @AuthMember('_id') memberId: ObjectId): Promise<Members> {
 		console.log('Query: getAgents');
 
 		return await this.memberService.getAgents(memberId, input);
+	}
+
+	//MUTATION => LIKE_TARGET_MEMBER ================================================================
+	@UseGuards(AuthGuard)
+	@Mutation(() => Member)
+	public async likeTargetMember(
+		@Args('memberId') input: string,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Member> {
+		console.log('Mutation: likeTargetMember');
+		const likeRefId = shapeIntoMongoObjectId(input);
+		return await this.memberService.likeTargetMember(memberId, likeRefId);
 	}
 
 	// ADMIN =======================================================================
@@ -150,6 +164,7 @@ export class MemberResolver {
 	}
 
 	//MUTATION => IMAGE_S_UPLOADER ===================================================================
+
 	@UseGuards(AuthGuard)
 	@Mutation((returns) => [String])
 	public async imagesUploader(
