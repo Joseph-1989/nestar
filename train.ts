@@ -15,4 +15,4 @@ function countNumberAndLetters(str) {
 	return { number, letter };
 }
 console.log(countNumberAndLetters('string152%¥'));
-console.log(countNumberAndLetters('string152%¥'));
+console.log(countNumberAndLetters('JOSEPH770077%¥'));
