@@ -1,13 +1,13 @@
+import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver } from '@nestjs/apollo';
-import { AppResolver } from './app.resolver';
+import { T } from './libs/types/common';
 import { ComponentsModule } from './components/components.module';
 import { DatabaseModule } from './database/database.module';
-import { T } from './libs/types/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { AppResolver } from './app.resolver';
 import { CommentResolver } from './components/comment/comment.resolver';
 
 @Module({
@@ -35,6 +35,6 @@ import { CommentResolver } from './components/comment/comment.resolver';
 		DatabaseModule,
 	],
 	controllers: [AppController],
-	providers: [AppService, AppResolver, CommentResolver],
+	providers: [AppService],
 })
 export class AppModule {}
