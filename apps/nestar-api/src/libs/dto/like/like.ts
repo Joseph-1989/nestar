@@ -7,8 +7,8 @@ export class MeLiked {
 	@Field(() => String)
 	memberId: ObjectId;
 
-	@Field(() => String)
-	likeRefId: ObjectId;
+	@Field(() => String, { nullable: true })
+	likeRefId?: ObjectId;
 
 	@Field(() => Boolean)
 	myFavorite: boolean;

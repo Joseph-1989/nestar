@@ -53,7 +53,7 @@ export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id')
 					$project: {
 						_id: 0,
 						memberId: 1,
-						LikeRefId: 1,
+						likeRefId: 1,
 						myFavorite: '$$localMyFavorite',
 					},
 				},
