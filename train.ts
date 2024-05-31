@@ -1,31 +1,25 @@
-// ZS-TASK:
+// ZT-TASK:
 
-// Shunday function yozing, u parametridagi arrayni
-// ichidagi 1 marta kelgan elemnetni qaytarsin.
-// MASALAN: singleNumber([4, 2, 1, 2, 1]) return 4
-function singleNumber(nums) {
+// Shunday function yozing, u parametridagi string
+// ichida 1 martadan ortiq qaytarilmagan birinchi harf indeksini qaytarsin.
+// MASALAN: firstUniqueCharIndex(“stamp”) return 0
+function firstUniqueCharIndex(str) {
 	const map = new Map();
-
-	// Count each element in the array
-	for (const num of nums) {
-		if (map.has(num)) {
-			map.set(num, map.get(num) + 1);
+	for (let i = 0; i < str.length; i++) {
+		if (map.has(str[i])) {
+			map.set(str[i], map.get(str[i]) + 1);
 		} else {
-			map.set(num, 1);
+			map.set(str[i], 1);
 		}
 	}
-
-	// Collect all elements that appear only once
-	const singleElements = [];
-	for (const [key, value] of map.entries()) {
-		if (value === 1) {
-			singleElements.push(key);
+	for (let i = 0; i < str.length; i++) {
+		if (map.get(str[i]) === 1) {
+			return i;
 		}
 	}
-
-	// Return the array of single elements
-	return singleElements;
+	return -1;
 }
-
 // Example usage
-console.log(singleNumber([4, 2, 1, 2, 1, 8, 9, 'a', 'k'])); // Should output: [4, 8, 9, 'a', 'k']
+console.log(firstUniqueCharIndex('stamp')); // Should output: 0
+console.log(firstUniqueCharIndex('stamps')); // Should output: -1
+console.log(firstUniqueCharIndex('')); // Should output: -1
