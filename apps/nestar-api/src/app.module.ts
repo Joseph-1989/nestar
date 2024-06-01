@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppResolver } from './app.resolver';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
 	imports: [
@@ -32,6 +33,7 @@ import { AppResolver } from './app.resolver';
 		}),
 		ComponentsModule,
 		DatabaseModule,
+		SocketModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, AppResolver],
