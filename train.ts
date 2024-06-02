@@ -1,25 +1,26 @@
-// ZT-TASK:
+// ZU-TASK:
 
-// Shunday function yozing, u parametridagi string
-// ichida 1 martadan ortiq qaytarilmagan birinchi harf indeksini qaytarsin.
-// MASALAN: firstUniqueCharIndex(“stamp”) return 0
-function firstUniqueCharIndex(str) {
+// Shunday function yozing, u parametridagi
+//  array ichida takrorlanmagan raqamlar yig'indisini qaytarsin.
+// MASALAN: sumOfUnique([1,2,3,2]) return 4
+function sumOfUnique(arr) {
 	const map = new Map();
-	for (let i = 0; i < str.length; i++) {
-		if (map.has(str[i])) {
-			map.set(str[i], map.get(str[i]) + 1);
+	let sum = 0;
+	for (let i = 0; i < arr.length; i++) {
+		if (map.has(arr[i])) {
+			map.set(arr[i], map.get(arr[i]) + 1);
 		} else {
-			map.set(str[i], 1);
+			map.set(arr[i], 1);
 		}
 	}
-	for (let i = 0; i < str.length; i++) {
-		if (map.get(str[i]) === 1) {
-			return i;
+	for (let i = 0; i < arr.length; i++) {
+		if (map.get(arr[i]) === 1) {
+			sum += arr[i];
 		}
 	}
-	return -1;
+	return sum;
 }
 // Example usage
-console.log(firstUniqueCharIndex('stamp')); // Should output: 0
-console.log(firstUniqueCharIndex('stamps')); // Should output: -1
-console.log(firstUniqueCharIndex('')); // Should output: -1
+console.log(sumOfUnique([1, 2, 3, 2])); // Should output: 4
+console.log(sumOfUnique([1, 2, 3, 4])); // Should output: 10
+console.log(sumOfUnique([1, 1, 1, 1])); // Should output: 0
