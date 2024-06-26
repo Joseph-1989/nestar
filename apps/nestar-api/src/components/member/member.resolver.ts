@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MemberService } from './member.service';
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
@@ -58,6 +58,7 @@ export class MemberResolver {
 		console.log('typeof authMember: ', typeof authMember);
 		console.log('authMember.memberType:', authMember.memberType);
 		console.log('authMember:', authMember);
+
 		return await `Hi, your memberType is ${authMember.memberType} and your memberNick is ${authMember.memberNick}, your memberId is ${authMember._id}`;
 	}
 

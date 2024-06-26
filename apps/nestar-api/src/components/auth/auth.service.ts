@@ -26,9 +26,20 @@ export class AuthService {
 		return await this.JwtService.signAsync(payload);
 	}
 
-	public async verifyToken(token: string): Promise<T> {
-		const member = await this.JwtService.verifyAsync(token);
-		member._id = shapeIntoMongoObjectId(member._id);
-		return member;
+	public async verifyToken(token: string): Promise<Member> {
+		try {
+			const member = await this.JwtService.verifyAsync(token);
+			member._id = shapeIntoMongoObjectId(member._id);
+			return member;
+		} catch (error) {
+			if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+				// Handle expired or invalid tokens explicitly.
+				// You can also log this error for debugging.
+				return null; // Or throw new AuthenticationError('Token verification failed')
+			} else {
+				// Rethrow unexpected errors
+				throw error;
+			}
+		}
 	}
 }
